@@ -2,12 +2,13 @@
 # Tópicos Especiais em Algoritmos - Departamento de Ciência da Computação, UFRJ
 # 24/08/2018
 
+from collections import OrderedDict
+from operator import itemgetter
+
 ## Exemplo de entrada
 inputs = [(102, 118), (100, 130), (80,120), (101,103), (90,102)] 
 
 anos = {}
-maisPessoasVivas = 0
-anoComMaisPessoasVivas = inputs[0][0]
 
 for i in inputs:
 	if i[0] not in anos:
@@ -16,9 +17,6 @@ for i in inputs:
 for ano in anos:
 	anos[ano] += 1
 	
-for ano in anos:
-	if anos[ano] > maisPessoasVivas:
-		maisPessoasVivas = anos[ano]
-		anoComMaisPessoasVivas = ano
+anosOrdenados = OrderedDict(sorted(anos.items(), key=itemgetter(1)))
 
-print("Ano com mais pessoas vivas: %d" % anoComMaisPessoasVivas)
+print("Ano com mais pessoas vivas: %d" % anosOrdenados.keys()[0])
