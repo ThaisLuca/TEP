@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-from collections import defaultdict
+import collections
 
 vogais = {'a': 0, 'e': 0, 'i': 0, 'o': 0, 'u': 0}
+letras_disponiveis = {}
 
 
 def backtrack(anagrama, tamanho_anagrama, letras):
@@ -19,28 +20,22 @@ def backtrack(anagrama, tamanho_anagrama, letras):
     for candidato in letras:
         
         # 2.1 se candidato é de fato um próximo passo válido (verifica as restrições)
-        while len(anagrama) == 0:
-            if candidato not in vogais:
-                letras.next()
-                continue
-            else:
-                if vogais[candidato] == 0:
-                    vogais[candidato] += 1
-                    anagrama.append(candidato)
-                else:
-                    letras.next()
-                    continue
-        if candidato in anagrama:
+        if len(anagrama) == 0 and candidato not in vogais:
             continue
-        if candidato == 'G' and 'P' in anagrama:
+        if letras_disponiveis[candidato] == 0:
+            continue
+        #if candidato in anagrama:
+        #    continue
+        if candidato == 'g' and 'p' in letras_disponiveis and 'p' not in anagrama:
             continue  # descarto esse candidato, passo para o próximo
         if candidato not in vogais and len(anagrama) > 2 and verificaSeAsDuasUltimasLetrasSaoConsoantes(anagrama):
             continue  
-        if candidato == anagrama[-1]:
+        if len(anagrama) > 0 and candidato == anagrama[-1]:
            continue  # essa letra é repetitida, não posso usá-la!
 
         # 2.2 modifica o estado corrente usando o candidato
         anagrama.append(candidato) 
+        letras_disponiveis[candidato] -= 1
         
         # 2.3 chamo recursivamente o próprio backtrack passando o novo estado
         backtrack(anagrama, tamanho_anagrama, letras)
@@ -57,12 +52,18 @@ def verificaSeAsDuasUltimasLetrasSaoConsoantes(anagrama):
     return False
 
 def anagramas(palavra):
+    global vogais, letras_disponiveis
+
     # crio o estado inicial
-    lista = lambda:list(palavra.lower())
-    letras = defaultdict(lista)
+    letras_disponiveis = collections.Counter(palavra.lower())
+
+    # for vogal in numero_de_vogais:
+    #     if vogal in vogais:
+    #         vogais[vogal] = numero_de_vogais[vogal]
+
     tamanho_palavra = len(palavra)
     anagrama = []
 
     backtrack(anagrama, tamanho_palavra, list(palavra.lower()))
 
-anagramas("Olabr")
+anagramas("gabpa")
