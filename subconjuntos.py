@@ -1,33 +1,37 @@
+# -*- coding: utf-8 -*-
+
 # Autor: Thais Luca
 # Topicos Especiais em Algoritmos - Departamento de Ciencia da Computacao, UFRJ
-# 14/08/2018
+# 01/10/2018
 
-import numpy
-import sys
+def backtrack(subconjunto, n, k):
 
-subconjuntos = []
+    # 1. verifique se o estado corrente merece tratamento especial
+    #  (se é um estado "final")
+    if len(subconjunto) == k:
+        print subconjunto
+        return True  # encontrei!
 
-def main():
-	print("Digite os valores de N e K separados por espaco")
-	n, k = raw_input().split()
-	n, k = int(n), int(k)
-	
-	if n < k:
-		print("N precisa ser maior do que K.")
-		sys.exit()
-	
-	a = numpy.full((n,1), True, dtype=bool)
-	subsets(0, a, n)
-	
-	print [subconjunto for subconjunto in subconjuntos if len(subconjunto) == k]
-	
-def subsets(i, a, N):
-	if i == N:
-		subconjuntos.append([j + 1 for j in range(N) if a[j] == True])
-	else:
-		a[i] = True
-		subsets(i + 1, a, N)	# Passo para o próximo no
-		a[i] = False
-		subsets(i + 1, a, N)	# Volto para o no anterior
+    # 2. para cada "candidato a próximo passo", faça...
+    for candidato in range(1,n+1):
+        
+        # 2.1 se candidato é de fato um próximo passo válido (verifica as restrições)
+        if candidato in subconjunto: 
+            continue 
 
-main()
+        # 2.2 modifica o anagrama usando o candidato
+        subconjunto.append(candidato) 
+        
+        # 2.3 chamo recursivamente o próprio backtrack passando o novo anagrama
+        backtrack(subconjunto, n, k)
+        
+        # 2.4 limpo a modificação que fiz
+        subconjunto.pop()
+
+def subconjuntos(n, k):
+    subconjunto = []
+
+    backtrack(subconjunto, n, k)
+
+
+subconjuntos(3,2)
