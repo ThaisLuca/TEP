@@ -64,14 +64,6 @@ def backtrack(configuracao, n, LE, LD, tamanhos, proximo_da_fila):
 		n -= 1
 
 
-	if proximo_da_fila + 1 == len(tamanhos):
-		return
-	ESPACO_LADO_ESQUERDO = LE - tamanhos[proximo_da_fila + 1]
-	ESPACO_LADO_DIREITO = LD - tamanhos[proximo_da_fila + 1]
-	if(ESPACO_LADO_ESQUERDO <= 0 and ESPACO_LADO_DIREITO <= 0) :
-		configuracao = []
-
-
 	backtrack(configuracao, n, LE, LD, tamanhos, proximo_da_fila)
 
 	if(lado_da_balsa == 0):
