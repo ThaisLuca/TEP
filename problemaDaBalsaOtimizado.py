@@ -4,7 +4,7 @@
 # Tópicos Especiais em Algoritmos - Departamento de Ciência da Computação, UFRJ
 # 08/10/2018
 #
-# Problema das Balsas com Memoização
+# Problema da Balsa com Memoização
 
 ESQUERDA = 'E'
 DIREITA = 'D'
