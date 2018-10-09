@@ -3,91 +3,60 @@
 # Autor: Thais Luca
 # Tópicos Especiais em Algoritmos - Departamento de Ciência da Computação, UFRJ
 # 07/10/2018
-
-
-import numpy.random as rand
+#
+# Problema das Balsas sem Memoização
 
 ESQUERDA = 'E'
 DIREITA = 'D'
-TAMANHO_DO_CORREDOR = 0
 
-def backtrack(configuracao, n, LE, LD, tamanhos, proximo_da_fila):
+import sys
 
-	if n == 0:
-		print ''.join([str(i) for i in configuracao]) + " (" + str(len(configuracao)) + ")"
-		return True
+encontreiSolucaoOtima = False
 
-	carro = tamanhos[proximo_da_fila]
+def backtrack(configuracao, ladoEsquerdo, ladoDireito, carros):
+    global encontreiSolucaoOtima
 
-	if len(configuracao) == len(tamanhos) or (LD + LE) < carro:
-		print ''.join([str(i) for i in configuracao]) + " (" + str(len(configuracao)) + ")"
-		return True
+    if(ladoEsquerdo < 0 or ladoDireito < 0):  
+        return
 
-	ESPACO_LADO_ESQUERDO = LE - carro
-	ESPACO_LADO_DIREITO = LD - carro
-	if(ESPACO_LADO_ESQUERDO <= 0 and ESPACO_LADO_DIREITO <= 0) or proximo_da_fila == len(tamanhos):
-		configuracao[:] = []
-		LE = TAMANHO_DO_CORREDOR
-		LD = TAMANHO_DO_CORREDOR
-		proximo_da_fila = 0
-		carro = tamanhos[0]
-		n = 7
-		#backtrack(configuracao, n, LE, LD, tamanhos, proximo_da_fila)
+    if(encontreiSolucaoOtima):
+        #configuracao.pop()
+        print configuracao
+        return
 
-	if((LE - carro) >= 0) and ((LD - carro) >= 0):
-		lado_da_balsa = rand.randint(2)
-		if(lado_da_balsa == 0):
-			print ESQUERDA, LE, carro
-			LE -= carro
-			configuracao.append(ESQUERDA)
-			proximo_da_fila += 1
-			n -= 1
-		else:
-			print DIREITA, LD, carro
-			LD -= carro
-			configuracao.append(DIREITA)
-			proximo_da_fila += 1
-			n -= 1
-	elif(((LE - carro) <= 0) and ((LD - carro) >= 0)):
-		print DIREITA, LD, carro
-		LD -= carro
-		configuracao.append(DIREITA)
-		proximo_da_fila += 1
-		lado_da_balsa = 1
-		n -= 1
-	elif(((LD - carro) <= 0) and ((LE - carro) >= 0)):
-		print ESQUERDA, LE, carro
-		LE -= carro
-		configuracao.append(ESQUERDA)
-		proximo_da_fila += 1
-		lado_da_balsa = 0
-		n -= 1
+    if(len(configuracao) == len(carros)):
+        encontreiSolucaoOtima = True
+        return
+
+    proximoDaFila = carros[len(configuracao)]
+
+    espacoLivre = ladoDireito + ladoEsquerdo
+    if(espacoLivre < proximoDaFila):
+        encontreiSolucaoOtima = True
+        return
+
+    if(proximoDaFila > ladoEsquerdo and  proximoDaFila > ladoDireito):
+        return
+
+    configuracao.append(ESQUERDA)
+    backtrack(configuracao, ladoEsquerdo - proximoDaFila, ladoDireito, carros)
+
+    configuracao.pop()
+    configuracao.append(DIREITA)
+    backtrack(configuracao, ladoEsquerdo, ladoDireito - proximoDaFila, carros)
 
 
-	backtrack(configuracao, n, LE, LD, tamanhos, proximo_da_fila)
-
-	if(lado_da_balsa == 0):
-		LE += carro
-	else:
-		LD += carro
-	proximo_da_fila -= 1
-	n += 1
-	configuracao.pop()
 
 # L: tamanho de cada um dos corredores
-# tamanhos: lista de n inteiros com os tamanhos de cada carro na ordem em que estão na fila
+# carros: lista de n inteiros com os tamanhos de cada carro na ordem em que estão na fila
 
-def balsas(L, n, tamanhos):
-	global TAMANHO_DO_CORREDOR
+def balsas(L, carros):
 
-	configuracao = []
-	LE = L  #Tamanho do corredor da esquerda
-	LD = L  #Tamanho do corredor da direita
-	TAMANHO_DO_CORREDOR = L
+    configuracao = []
+    ladoEsquerdo = L    #Tamanho do corredor da esquerda
+    ladoDireito = L     #Tamanho do corredor da direita
 
-	proximo_da_fila = 0
-
-	backtrack(configuracao, n, LE, LD, tamanhos, proximo_da_fila)
+    backtrack(configuracao, ladoEsquerdo, ladoDireito, carros)
 
 
-balsas(100, 7, [40, 35, 20, 60, 30, 12, 18])
+balsas(100, [40, 35, 20, 60, 30, 12, 18])
