@@ -10,22 +10,15 @@ ESQUERDA = 'E'
 DIREITA = 'D'
 
 encontreiSolucaoOtima = False
-solucaoOtima = None
+solucaoOtima = []
 
 def backtrack(configuracao, ladoEsquerdo, ladoDireito, carros):
     global encontreiSolucaoOtima, solucaoOtima
 
-    if(ladoEsquerdo < 0 or ladoDireito < 0):  
+    if(encontreiSolucaoOtima):
         return
 
-    if len(configuracao) != len(carros):
-        proximoDaFila = carros[len(configuracao)]
-
-        if(proximoDaFila > ladoEsquerdo and  proximoDaFila > ladoDireito):
-            return
-
-
-    if(encontreiSolucaoOtima):
+    if(ladoEsquerdo < 0 or ladoDireito < 0):  
         return
 
     if(len(configuracao) == len(carros)):
@@ -34,11 +27,11 @@ def backtrack(configuracao, ladoEsquerdo, ladoDireito, carros):
         return
 
     proximoDaFila = carros[len(configuracao)]
-    espacoLivre = ladoDireito + ladoEsquerdo
-    if(espacoLivre < proximoDaFila):
-        encontreiSolucaoOtima = True
-        solucaoOtima = configuracao
-        return
+
+    if(proximoDaFila > ladoEsquerdo and  proximoDaFila > ladoDireito):
+        if(len(configuracao) > len(solucaoOtima)):
+            solucaoOtima = configuracao
+            return
 
     configuracao.append(ESQUERDA)
     backtrack(configuracao, ladoEsquerdo - proximoDaFila, ladoDireito, carros)
@@ -54,13 +47,13 @@ def backtrack(configuracao, ladoEsquerdo, ladoDireito, carros):
 
 def balsas(L, carros):
 
-    configuracao = []
+    configuracao = []   #Vetor para guardar as configurações encontradas
     ladoEsquerdo = L    #Tamanho do corredor da esquerda
     ladoDireito = L     #Tamanho do corredor da direita
 
     backtrack(configuracao, ladoEsquerdo, ladoDireito, carros)
     solucaoOtima.pop()
-    print solucaoOtima
+    print(''.join(solucaoOtima) + " (" + str(len(solucaoOtima)) + ")")
 
 
 balsas(100, [40, 35, 20, 60, 30, 12, 18])
