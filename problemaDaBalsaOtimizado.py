@@ -4,16 +4,25 @@
 # Tópicos Especiais em Algoritmos - Departamento de Ciência da Computação, UFRJ
 # 08/10/2018
 #
-# Problema das Balsas sem Memoização
+# Problema das Balsas com Memoização
 
 ESQUERDA = 'E'
 DIREITA = 'D'
 
 encontreiSolucaoOtima = False
 solucaoOtima = ""
+memo = {}
 
 def backtrack(configuracaoAtual, ladoEsquerdo, ladoDireito, carros):
     global encontreiSolucaoOtima, solucaoOtima
+
+    if(ladoEsquerdo < ladoDireito):
+        resultadoMemo = memo.get((ladoEsquerdo, ladoDireito))
+    else:
+        resultadoMemo = memo.get((ladoDireito, ladoEsquerdo))
+
+    if resultadoMemo is not None:
+        return resultadoMemo
 
     # Verifico se já encontrei a melhor solução possível.
     if(encontreiSolucaoOtima):
@@ -27,6 +36,12 @@ def backtrack(configuracaoAtual, ladoEsquerdo, ladoDireito, carros):
     if(len(configuracaoAtual) == len(carros)):
         encontreiSolucaoOtima = True
         solucaoOtima = configuracaoAtual
+
+        if(ladoEsquerdo < ladoDireito):
+            memo[(ladoEsquerdo, ladoDireito)] = configuracaoAtual
+        else:
+            memo[(ladoDireito, ladoEsquerdo)] = configuracaoAtual
+
         return
 
     proximoDaFila = carros[len(configuracaoAtual)]
@@ -35,6 +50,11 @@ def backtrack(configuracaoAtual, ladoEsquerdo, ladoDireito, carros):
     if(proximoDaFila > ladoEsquerdo and  proximoDaFila > ladoDireito):
         if(len(configuracaoAtual) > len(solucaoOtima)):
             solucaoOtima = configuracaoAtual
+
+            if(ladoEsquerdo < ladoDireito):
+                print configuracaoAtual
+            else:
+                memo[(ladoDireito, ladoEsquerdo)] = configuracaoAtual
         return
 
     # Testo as possibilidades de inserção na esquerda e na direita
@@ -45,7 +65,7 @@ def backtrack(configuracaoAtual, ladoEsquerdo, ladoDireito, carros):
 # L: tamanho de cada um dos corredores
 # carros: lista de n inteiros com os tamanhos de cada carro na ordem em que estão na fila
 
-def balsas(L, carros):
+def balsa(L, carros):
 
     configuracaoAtual = ""  #Vetor para guardar as configurações encontradas
     ladoEsquerdo = L        #Tamanho do corredor da esquerda
