@@ -9,37 +9,36 @@ paresTestados = {}		# Dicionário para cortar os pares já testados. Por exemplo
 						# a um retângulo 100x150. Chave: (menorDimensão, maiorDimensão)
 tamanhosDisponiveis = []
 tamanhoPalavrasDasColunas = 0
+tamanhosTestadosNaRodada = []
+acabou = False
 
 def backtrack(retanguloEncontrado, tamanho):
-	candidatas = palavrasPorTamanho.get(tamanho)
-
-	if len(retanguloEncontrado) == tamanho:
-		print(retanguloEncontrado)
+	
+	if(len(retanguloEncontrado) == tamanho):
 		return True
 
+	candidatas = palavrasPorTamanho.get(tamanho)
+
 	for candidata in candidatas:
-		print("Próxima candidata", candidata)
-		if candidata in retanguloEncontrado:
-			continue
-		if(len(retanguloEncontrado) < 2):	# As primeiras duas candidatas entram direto no retângulo.
-			print("Palavra " + candidata + " adicionada!")
-			retanguloEncontrado.append(candidata)
-		else:
-			print("verificando prefixo...")
-			possuiPrefixo = temPrefixo(len(retanguloEncontrado), retanguloEncontrado)
-			print("Sai")
-			if(not possuiPrefixo):
-				print("Não temos prefixo ):")
-				continue	# Se não tem prefixo com uma palavra válida, não é uma candidate válida.
-			else:
-				print("Oba! Tem prefixo!")
+		print candidata
+		for i in range(tamanho):
+			prefixos = []
+			if(len(retanguloEncontrado) < 2):
 				retanguloEncontrado.append(candidata)
+				print("break")
+			for palavra in retanguloEncontrado:
+				print "palabra" ,palavra
+				prefixos.append(palavra[i])
+			print "prefixos", prefixos
 
-        backtrack(retanguloEncontrado, tamanho)
-        
-        retanguloEncontrado.pop()
+			# if(not possuiPrefixo(prefixos, tamanho)):
+			# 	break
 
-		
+		retanguloEncontrado.append(candidata)
+		if(backtrack(retanguloEncontrado, tamanho)):
+			return True
+
+		return False
 
 
 # @Param Palavras: lista de palavras para montar um retângulo mágico.
@@ -55,32 +54,27 @@ def separarPalavrasPorTamanho(palavrasValidas):
 
 def temPrefixo(tamanhoRetangulo, retanguloEncontrado):
 	global tamanhoPalavrasDasColunas
-	
-	if tamanhoPalavrasDasColunas == 0:
-		index = 0
-	else: 
-		index = tamanhoPalavrasDasColunas
 
-	possiveisColunas = palavrasPorTamanho.get(index)
-	if possiveisColunas is None:
-		return False
 	numeroPrefixosEncontrados = 0
 
 	print retanguloEncontrado, tamanhoRetangulo
 	prefixosPalavras = obterPrefixos(retanguloEncontrado, tamanhoRetangulo)
+	print prefixosPalavras
 	for prefixo in prefixosPalavras:
 		print("Prefixo encontrado ", prefixo)
-		for coluna in possiveisColunas:
-			print("Coluna a ser testada ", coluna)
-			if prefixo == coluna[:tamanhoRetangulo]:
-				numeroPrefixosEncontrados += 1
+		tamanhos = reversed(palavrasPorTamanho.keys())
+		for tamanho in tamanhos:
+			possiveisColunas = palavrasPorTamanho.get(tamanho)
+			for palavra in possiveisColunas:
+				print("Coluna a ser testada ", coluna)
+				if prefixo == coluna[:tamanhoRetangulo]:
+					numeroPrefixosEncontrados += 1
 
-	if numeroPrefixosEncontrados == len(retanguloEncontrado[0]):
-		print("Possui prefixo!")
-		return True
+		if numeroPrefixosEncontrados == len(retanguloEncontrado[0]):
+			print("Possui prefixo!")
+			return True
 	else:
-		print("Não possui prefixo ):")
-		tamanhoPalavrasDasColunas += 1
+		tamanhosTestadosNaRodada.append()
 		return False
 
 
@@ -95,6 +89,24 @@ def obterPrefixos(estadoCorrente, tamanhoPrefixo):
 	print("palavra corrente " + palavra + " e seus prefixos ", prefixos)
 	return prefixos
 
+def parJaTestado(i, j):
+	if i < j:
+		parEncontrado = paresTestados.get((i,j))
+		if parEncontrado is not None:
+			return True
+	elif j < i:
+		parEncontrado = paresTestados.get((j,i))
+		if parEncontrado is not None:
+			return True
+	return False
+
+def insereNovoParTestado(i,j):
+	if i < j:
+		paresTestados[(i,j)] = 1
+	else:
+		paresTestados[(j,i)] = 1
+
+
 # @Param Palavras: uma lista de palavras da língua inglesa.
 def retanguloMagico(palavrasValidas):
 	global tamanhoPalavrasDasColunas
@@ -102,7 +114,6 @@ def retanguloMagico(palavrasValidas):
 	separarPalavrasPorTamanho(palavrasValidas)
 	print("Palavras separadas por tamanho", palavrasPorTamanho)
 	tamanhosDisponiveis = reversed(palavrasPorTamanho.keys())
-	tamanhoPalavrasDasColunas = palavrasPorTamanho.keys()[0]
 
 	for i in tamanhosDisponiveis:
 		retanguloEncontrado = []
@@ -110,5 +121,5 @@ def retanguloMagico(palavrasValidas):
 			print("Retornou")
 			print(retanguloEncontrado)
 			break
-
+			
 retanguloMagico(["alo", "lua", "aaa"])
