@@ -4,12 +4,13 @@
 # Tópicos Especiais em Algoritmos - Departamento de Ciência da Computação, UFRJ
 # 23/10/2018
 
-palavrasPorTamanho = {}	# Identifica todas as palavras de um determinado tamanho
+palavrasPorTamanho = {}	# Identifica todas as palavras de um determinado tamanho.
 
 # @Param estadoCorrente: estado atual do retângulo do backtrack
 # @Param tamanho: tamanho do retângulo
 def backtrack(estadoCorrente, tamanho):	
 
+	# Verifico se é um estado final.
 	if(len(estadoCorrente) == tamanho):
 		return True
 
@@ -65,7 +66,7 @@ def separarPalavrasPorTamanho(palavrasValidas):
 			palavrasPorTamanho[tamanhoPalavra] = [palavra]
 
 # @Param Palavras: uma lista de palavras da língua inglesa.
-def retanguloMagico(palavrasValidas):
+def retanguloPalavras(palavrasValidas):
 	global tamanhoPalavrasDasColunas
 
 	separarPalavrasPorTamanho(palavrasValidas)
@@ -80,5 +81,6 @@ def retanguloMagico(palavrasValidas):
 				print("Retângulo Encontrado:")
 				for palavra in estadoCorrente:
 					print(palavra)
-		else:
-			print("Não foi possível encontrar um retângulo mágico.")
+				return
+
+	print("Não foi possível encontrar um retângulo mágico.")
