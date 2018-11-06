@@ -41,8 +41,3 @@ def encontrarParesSeguidos(distribuicao, rodadas):
 
 	print("Número de pares seguidos: ", paresEncontrados)
 	print("Probabilidade de formar dois pares: ", paresEncontrados / rodadas)
-
-
-distribuicao = [0.1, 0.2, 0.3, 0.1, 0.2, 0.1]
-encontrarTrio(distribuicao, 100)
-encontrarParesSeguidos(distribuicao, 100)
