@@ -13,30 +13,32 @@ def sorteio(distribuicao):
 	return np.random.choice(dado, p=distribuicao)
 
 
+# Calcula a probabilidade de se obter três resultados iguais em três lançamentos seguidos do dado.
 def encontrarTrio(distribuicao, rodadas):
 	triosFormados = 0
 
 	for i in range(rodadas):
-		resultadoDado1 = sorteio(distribuicao)
-		resultadoDado2 = sorteio(distribuicao)
-		resultadoDado3 = sorteio(distribuicao)
+		resultado1 = sorteio(distribuicao)
+		resultado2 = sorteio(distribuicao)
+		resultado3 = sorteio(distribuicao)
 
-		if(resultadoDado1 == resultadoDado2 and resultadoDado1 == resultadoDado3):
+		if(resultado1 == resultado2 and resultado1 == resultado3):
 			triosFormados += 1
 
 	print("Número de trios formados: ", triosFormados)
 	print("Probabilidade de formar um trio: ", triosFormados / rodadas)
 
+# Calcula a probabilidade de se obter dois pares seguidos em quatro lançamentos do dado.
 def encontrarParesSeguidos(distribuicao, rodadas):
 	paresEncontrados = 0
 
 	for i in range(rodadas):
-		resultadoDado1 = sorteio(distribuicao)
-		resultadoDado2 = sorteio(distribuicao)
-		resultadoDado3 = sorteio(distribuicao)
-		resultadoDado4 = sorteio(distribuicao)
+		resultado1 = sorteio(distribuicao)
+		resultado2 = sorteio(distribuicao)
+		resultado3 = sorteio(distribuicao)
+		resultado4 = sorteio(distribuicao)
 
-		if(resultadoDado1 == resultadoDado2 and resultadoDado3 == resultadoDado4):
+		if(resultado1 == resultado2 and resultado3 == resultado4):
 			paresEncontrados += 1
 
 	print("Número de pares seguidos: ", paresEncontrados)

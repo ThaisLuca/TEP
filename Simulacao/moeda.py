@@ -16,8 +16,11 @@ COROA = 0
 
 def jogarMoeda():
 	moeda = [CARA, COROA]
+	print 1-PROBABILIDADE
 	return np.random.choice(moeda, p=[PROBABILIDADE, 1-PROBABILIDADE])
 
+
+# Encontra o número de lançamentos da moeda até obter 5 caras.
 def obterCincoCaras():
 	numeroCaras = 0
 	numeroJogadas = 0
@@ -30,6 +33,7 @@ def obterCincoCaras():
 
 	print("Número de lançamentos até obter 5 caras: ", numeroJogadas)
 
+# Encontra o número de lançamentos até obter 2 caras seguidas 2 vezes independentemente.
 def obterDuasCarasSeguidas():
 	numeroDeCarasSeguidas = 0
 	ultimoResultado = None
@@ -49,5 +53,3 @@ def obterDuasCarasSeguidas():
 		ultimoResultado = r
 
 	print("Número de lançamentos para obter duas caras seguidas duas vezes: ", numeroJogadas)
-
-obterDuasCarasSeguidas()
