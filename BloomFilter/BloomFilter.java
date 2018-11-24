@@ -2,7 +2,7 @@ import java.util.*;
 import java.lang.Long;
 import sun.nio.*;
 
-class BloomFilter {
+public class BloomFilter {
 	private boolean[] espacos;
 	private int tamanho;
 	private int hash;
@@ -41,6 +41,16 @@ class BloomFilter {
 		return true;
 	}
 
+	public static void main(String[] args){
+		System.out.println("Oi");
+		BloomFilter f = new BloomFilter(4, 2);
+		f.adicionarTermo(2);
+		if(!f.filtroVazio()){
+			System.out.println("Vazio");
+		}
+		System.out.println(f.buscarTermo((long) 2));
+	}
+
 	private int[] calcularEspacos(long termo){
 		int[] esp = new int[hash];
 		for(int i = 0; i < hash; i++){
@@ -53,12 +63,5 @@ class BloomFilter {
 		return Math.abs(Long.valueOf(termo*i).hashCode()) % this.tamanho;
 	}
 
-	public static void main(String[] args){
-		BloomFilter f = new BloomFilter(4, 2);
-		f.adicionarTermo(2);
-		if(!f.filtroVazio()){
-			System.out.println("Vazio");
-		}
-		System.out.println(f.buscarTermo((long) 2));
-	}
+
 }
